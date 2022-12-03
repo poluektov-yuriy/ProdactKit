@@ -33,7 +33,10 @@ let package = Package(
             dependencies: []),
         .target(
             name: "AmplitudeAnalyticsWrapper",
-            dependencies: ["ProdactKit"]),
+            dependencies: [
+                "ProdactKit",
+                .product(name: "Amplitude", package: "Amplitude-iOS")
+            ]),
         .testTarget(
             name: "ProdactKitTests",
             dependencies: ["ProdactKit"]),
