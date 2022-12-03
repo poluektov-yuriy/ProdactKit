@@ -29,8 +29,6 @@ public class Analytics: AnalyticsSystem {
         return _shared
     }
     
-    private init() {}
-    
     // MARK: Configuration
     
     public func addEventHandler(_ handler: AnalyticEventHandler) {
