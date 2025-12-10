@@ -8,7 +8,12 @@
 import Foundation
 import ProdactKit
 import AppMetricaCore
+import OSLog
 
+@available(iOS 14.0, *)
+private let logger = Logger(subsystem: "Analytics", category: "AppMetricaEventHandler")
+
+@available(iOS 14.0, *)
 public class AppMetricaEventHandler: AnalyticEventHandler {
 
    private let apiKey: String
@@ -25,21 +30,18 @@ public class AppMetricaEventHandler: AnalyticEventHandler {
 
    public func logEvent(_ eventType: String) {
       AppMetrica.reportEvent(name: eventType) { error in
-         #if DEBUG
-         print(">>> ERROR Logging AppMetrica event: \(eventType), error = \(error)")
-         #endif
+         logger.log(">>> ERROR Logging AppMetrica event: \(eventType), error = \(error)")
       }
    }
 
    public func logEvent(_ eventType: String, properties: [String : Any], outOfSession: Bool) {
       AppMetrica.reportEvent(name: eventType, parameters: properties) { error in
-         #if DEBUG
-         print(">>> ERROR Logging AppMetrica event: \(eventType), properties: \(String(describing: properties)), error = \(error)")
-         #endif
+         logger.log(">>> ERROR Logging AppMetrica event: \(eventType), properties: \(String(describing: properties)), error = \(error)")
       }
    }
 }
 
+@available(iOS 14.0, *)
 extension AppMetricaEventHandler: AnalyticsUserPropertiesHandler {
 
    // MARK: User Properties
@@ -68,16 +70,12 @@ extension AppMetricaEventHandler: AnalyticsUserPropertiesHandler {
       profile.apply(from: profileUpdates)
 
       AppMetrica.reportUserProfile(profile, onFailure: { error in
-         #if DEBUG
-         print(">>> ERROR Setting AppMetrica user properties: \(properties), error = \(error.localizedDescription)")
-         #endif
+         logger.log(">>> ERROR Setting AppMetrica user properties: \(properties), error = \(error.localizedDescription)")
       })
    }
 
    public func clearUserProperties() {
-      #if DEBUG
-      print(">>> WARNING: clearUserProperties() is not fully supported in AppMetrica. Properties need to be unset individually.")
-      #endif
+      logger.log(">>> WARNING: clearUserProperties() is not fully supported in AppMetrica. Properties need to be unset individually.")
    }
 
    public func set<T>(value: T, key: UserPropertyKey<T>) where T : LosslessStringConvertible {
@@ -101,9 +99,7 @@ extension AppMetricaEventHandler: AnalyticsUserPropertiesHandler {
       }
 
       AppMetrica.reportUserProfile(profile, onFailure: { error in
-         #if DEBUG
-         print(">>> ERROR Setting AppMetrica user property: \(key.key) = \(stringValue), error = \(error.localizedDescription)")
-         #endif
+         logger.log(">>> ERROR Setting AppMetrica user property: \(key.key) = \(stringValue), error = \(error.localizedDescription)")
       })
    }
 
@@ -114,17 +110,13 @@ extension AppMetricaEventHandler: AnalyticsUserPropertiesHandler {
       if let doubleValue = Double(stringValue) {
          profile.apply(ProfileAttribute.customCounter(key.key).withDelta(doubleValue))
       } else {
-         #if DEBUG
-         print(">>> WARNING: AppMetrica add() only supports numeric values. Key: \(key.key), Value: \(stringValue)")
-         #endif
+         logger.log(">>> WARNING: AppMetrica add() only supports numeric values. Key: \(key.key), Value: \(stringValue)")
 
          profile.apply(ProfileAttribute.customCounter(key.key).withDelta(0))
       }
 
       AppMetrica.reportUserProfile(profile, onFailure: { error in
-         #if DEBUG
-         print(">>> ERROR Adding AppMetrica user property: \(key.key) += \(stringValue), error = \(error.localizedDescription)")
-         #endif
+         logger.log(">>> ERROR Adding AppMetrica user property: \(key.key) += \(stringValue), error = \(error.localizedDescription)")
       })
    }
 
@@ -138,9 +130,7 @@ extension AppMetricaEventHandler: AnalyticsUserPropertiesHandler {
       ])
 
       AppMetrica.reportUserProfile(profile, onFailure: { error in
-         #if DEBUG
-         print(">>> ERROR Unsetting AppMetrica user property: \(key.key), error = \(error.localizedDescription)")
-         #endif
+         logger.log(">>> ERROR Unsetting AppMetrica user property: \(key.key), error = \(error.localizedDescription)")
       })
    }
 }
