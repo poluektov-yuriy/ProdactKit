@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "ProdactKit",
     platforms: [
-        .iOS(.v11),
+        .iOS(.v13),
         .tvOS(.v11),
         .macOS(.v10_13),
         .watchOS(.v4),
@@ -19,11 +19,15 @@ let package = Package(
         .library(
             name: "AmplitudeAnalyticsWrapper",
             targets: ["AmplitudeAnalyticsWrapper"]),
+        .library(
+            name: "AppMetricaAnalyticsWrapper",
+            targets: ["AppMetricaAnalyticsWrapper"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/amplitude/Amplitude-iOS.git", exact: "8.14.0"),
+        .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", from: "5.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -36,6 +40,12 @@ let package = Package(
             dependencies: [
                 "ProdactKit",
                 .product(name: "Amplitude", package: "Amplitude-iOS")
+            ]),
+        .target(
+            name: "AppMetricaAnalyticsWrapper",
+            dependencies: [
+                "ProdactKit",
+                .product(name: "AppMetricaCore", package: "appmetrica-sdk-ios")
             ]),
         .testTarget(
             name: "ProdactKitTests",
