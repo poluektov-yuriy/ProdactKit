@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  ProdactKit
-//
-//  Created by Roman Korobskoy on 08.12.2025.
-//
-
 import Foundation
 import ProdactKit
 import AppMetricaCore

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Analytics: AnalyticsSystem {
+public class Analytics: AnalyticsSystem, @unchecked Sendable {
     
     private var eventHandlers: [AnalyticEventHandler] = []
     private var userPropertiesHandlers: [AnalyticsUserPropertiesHandler] = []
@@ -25,8 +25,8 @@ public class Analytics: AnalyticsSystem {
         return _shared
     }
     
-    public class var shared: AnalyticsSystem {
-        return _shared
+    public static var shared: Analytics {
+      return _shared
     }
     
     // MARK: Configuration
@@ -57,7 +57,11 @@ extension Analytics: AnalyticsEventsInput {
         logEvent(eventKey, propertiesModel: propertiesModel, outOfSession: false)
     }
     
-    public func logEvent<T: Encodable>(_ eventKey: EventKey<T>, propertiesModel: T, outOfSession: Bool = false) {
+    public func logEvent<T: Encodable>(
+        _ eventKey: EventKey<T>,
+        propertiesModel: T,
+        outOfSession: Bool = false
+    ) {
         let encoder = DictionaryEncoder()
         do {
             let properties: [String: Any] = try encoder.encode(propertiesModel)

@@ -1,11 +1,3 @@
-//
-//  AmplitudeEventHandler.swift
-//  WordixProject
-//
-//  Created by Iurii Poluektov on 07/06/2019.
-//  Copyright © 2019 Entertech. All rights reserved.
-//
-
 import Foundation
 import ProdactKit
 import Amplitude

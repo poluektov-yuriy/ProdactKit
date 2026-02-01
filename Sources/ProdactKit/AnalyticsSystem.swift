@@ -183,7 +183,7 @@ public protocol AnalyticsEventsInput {
 
 
 /// Common protocol for Analytics wrapper
-public protocol AnalyticsSystem {
+public protocol AnalyticsSystem: Sendable {
     
     /// Use it for managing of user traits in analytics wrapper.
     var userTraitsInput: AnalyticsUserPropertiesInput { get }
