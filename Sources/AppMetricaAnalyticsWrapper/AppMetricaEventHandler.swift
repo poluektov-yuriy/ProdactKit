@@ -17,6 +17,7 @@ public class AppMetricaEventHandler: AnalyticEventHandler {
 
    public func configure() {
       if let configuration = AppMetricaConfiguration(apiKey: apiKey) {
+         configuration.locationTracking = false
          AppMetrica.activate(with: configuration)
       }
    }
